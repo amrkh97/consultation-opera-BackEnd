@@ -35,7 +35,7 @@ insert into `users`(`firstName`,`lastName`,
 `userName`,`userPassword`,
 `gender`,`city`,`email`,`position`)
 values
-('Amr','Khaled','amrkh97','test1234','Male','Cairo','amrkh97@gmail.com',1)
+('Amr','Khaled','amrkh97','test1234','Male','Cairo','amrkh97@gmail.com',1);
 --------------------------------------
 
 CREATE TABLE IF NOT EXISTS halls(
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS events(
     eventPoster VARCHAR(255) DEFAULT 'None', -- FTP LINK
     eventTiming DATETIME DEFAULT CURRENT_TIMESTAMP,
     hallNumber int,
-    eventStatus VARCHAR(25) DEFAULT 'ACTIVE'
+    eventStatus VARCHAR(25) DEFAULT 'ACTIVE',
 
     FOREIGN KEY(hallNumber)
     REFERENCES halls(id)
@@ -80,7 +80,7 @@ Ticket price: 100 L.E
 Location: KMT House 
 Event time: Thursday 12 Dec 2019
 come join us and laugh for a cause
-and please feel free to invite and share with your friends',1)
+and please feel free to invite and share with your friends',1);
 ------------------------------------------
 
 CREATE TABLE IF NOT EXISTS statusOfEvents(
@@ -109,4 +109,3 @@ CREATE TABLE IF NOT EXISTS reservations(
     REFERENCES users(id)
 
 );
---------------------------------------------
