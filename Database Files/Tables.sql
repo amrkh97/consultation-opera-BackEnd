@@ -1,5 +1,6 @@
 CREATE DATABASE IF NOT EXISTS Consultation_Opera;
---
+
+USE Consultation_Opera;
 
 CREATE TABLE IF NOT EXISTS user_types (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -14,18 +15,30 @@ values
 ("Guest");
 -----------------------------------
 
+CREATE TABLE IF NOT EXISTS StatusOfUsers(
+    id int AUTO_INCREMENT primary key,
+    title VARCHAR(25)
+);
+
+insert into `StatusOfUsers`(`title`)
+values
+('Verified'),
+('Not Verified');
+-----------------------------------
+
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     firstName VARCHAR(50) NOT NULL,
     lastName VARCHAR(50) NOT NULL,
     userName VARCHAR(50) NOT NULL UNIQUE,
     userPassword VARCHAR(255) NOT NULL,
-    birthDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    birthDate DATE DEFAULT CURRENT_DATE,
     gender VARCHAR(6),
     city VARCHAR(50),
     userAddress VARCHAR(255) DEFAULT 'None',
     email VARCHAR(100) NOT NULL UNIQUE,
     position INT,
+    userStatus INT DEFAULT 2, # 2 means not verified
 
     FOREIGN KEY(position)
     REFERENCES user_types(id)
@@ -33,9 +46,9 @@ CREATE TABLE IF NOT EXISTS users (
 
 insert into `users`(`firstName`,`lastName`,
 `userName`,`userPassword`,
-`gender`,`city`,`email`,`position`)
+`gender`,`city`,`email`,`position`,`userStatus`)
 values
-('Amr','Khaled','amrkh97','test1234','Male','Cairo','amrkh97@gmail.com',1);
+('Amr','Khaled','amrkh97','test1234','Male','Cairo','amrkh97@gmail.com',1,1);
 --------------------------------------
 
 CREATE TABLE IF NOT EXISTS halls(
@@ -54,7 +67,7 @@ CREATE TABLE IF NOT EXISTS events(
     id INT AUTO_INCREMENT PRIMARY KEY,
     eventName VARCHAR(100) NOT NULL,
     eventDescription text,
-    eventPoster VARCHAR(255) DEFAULT 'None', -- FTP LINK
+    eventPoster VARCHAR(255) DEFAULT 'None', # FTP LINK
     eventTiming DATETIME DEFAULT CURRENT_TIMESTAMP,
     hallNumber int,
     eventStatus VARCHAR(25) DEFAULT 'ACTIVE',
@@ -97,7 +110,7 @@ values
 
 CREATE TABLE IF NOT EXISTS reservations(
     id int AUTO_INCREMENT PRIMARY KEY,
-    eventID int, --Foreign Key
+    eventID int, # Foreign Key
     userID int, 
     reservedRow int,
     reservedColumn int,
