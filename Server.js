@@ -1,10 +1,10 @@
 var express = require("express");
 var mysql = require("mysql");
-var bodyParser = require("body-parser");
 var application_root = __dirname;
 var app = express();
-var auth = require("./auth-controller/AuthController.js");
-var users = require("./user-controller/userController.js")
+
+var auth =  require("./auth-controller/AuthController.js");
+var users = require("./user-controller/userController.js");
 
 function REST() {
   var self = this;
@@ -48,12 +48,13 @@ REST.prototype.configureExpress = function(connection) {
     
     //Instantiate the Routes:
     new users(usersRouterObj, connection);
+
     self.startServer();
 };
 
  
 REST.prototype.startServer = function() {
-    app.use( express.static( application_root ) )
+    app.use( express.static(application_root+'/static' ) )
     app.listen(3000, function() {
       console.log("Server running at port 3000");
     });
