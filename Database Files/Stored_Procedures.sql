@@ -29,12 +29,22 @@ on U.userStatus = SU.id;
 
 END$$
 
-create procedure user_Verify(IN userID INT)
-BEGIN
+create procedure user_Verify(
+    IN userID INT,
+    OUT checkInt INT)
+root:BEGIN
+
+IF NOT EXISTS (SELECT * FROM users where users.id = userID) THEN
+	BEGIN
+		SET checkInt = 2; #User Does not exist 
+        LEAVE root;
+	END;
+END if;
 
 UPDATE users
 SET users.userStatus = 1
 WHERE users.id = userID AND users.userStatus <> 1;
+SET checkInt = 1; #User verified 
 
 END$$
 
