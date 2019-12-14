@@ -29,14 +29,13 @@ on U.userStatus = SU.id;
 
 END$$
 
-create procedure user_Verify(
-    IN userID INT,
-    OUT checkInt INT)
+create procedure user_Verify(IN userID INT)
 root:BEGIN
 
 IF NOT EXISTS (SELECT * FROM users where users.id = userID) THEN
 	BEGIN
-		SET checkInt = 2; #User Does not exist 
+        DECLARE checkInt;
+		SELECT 2 as response; #User Does not exist 
         LEAVE root;
 	END;
 END if;
@@ -44,8 +43,7 @@ END if;
 UPDATE users
 SET users.userStatus = 1
 WHERE users.id = userID AND users.userStatus <> 1;
-SET checkInt = 1; #User verified 
-
+SELECT 1 as response; #User verified 
 END$$
 
 
@@ -59,8 +57,7 @@ create procedure user_addNew(
     IN _city VARCHAR(50),
     IN _userAddress VARCHAR(255),
     IN _email VARCHAR(100),
-    IN _position INT,
-    OUT checkInt INT
+    IN _position INT
 )
 root:BEGIN
 SELECT _birthDate;
@@ -68,20 +65,17 @@ SELECT _birthDate;
 
 IF EXISTS (SELECT * FROM users where users.email = _email) THEN
 	BEGIN
-		SET checkInt = 1; #Email Already Exists
+		SELECT 1 as response; #Email Already Exists
         LEAVE root;
 	END;
 END if;
 
 IF EXISTS (SELECT * FROM users where users.userName = _userName) THEN
 	BEGIN
-		SET checkInt = 2; # User Name Already Exists
+		SELECT 2 as response; # User Name Already Exists
         LEAVE root;
 	END;
 END if;
-
-
-SELECT checkInt;
 
 insert into `users`(`firstName`,`lastName`,
 `userName`,`userPassword`,`birthDate`,
@@ -92,14 +86,13 @@ _gender,_city,_userAddress,_email,_position);
 
 IF EXISTS (SELECT * FROM users where users.email = _email) THEN
 	BEGIN
-		SET checkInt = 0; # Insertion successfull
+		SELECT 0 as response; # Insertion successfull
 	END;
 ELSE
 	BEGIN
-		SET checkInt = 1; #Error in Insertion
+		SELECT 3 as response; #Error in Insertion
 	END;
 END if;
-
 END$$
 
 create procedure user_changePosition(
@@ -116,5 +109,21 @@ END$$
 
 
 # ---------------------------------------------- #
+
+create procedure user_types_getAll()
+BEGIN
+
+SELECT * FROM `user_types`;
+
+END$$
+
+# ---------------------------------------------- #
+
+create procedure events_getAll()
+BEGIN
+
+SELECT * FROM `events`;
+
+END$$
 
 
