@@ -10,9 +10,7 @@ function USERTYPES_ROUTER(router, connection) {
 USERTYPES_ROUTER.prototype.handleRoutes = function(router, connection) {
     router.use(bodyParser.json());
     
-    //getAll: Gets All Users in system.
     router.post("/getAll", VerifyToken, function(req, res) {
-      console.log("userTypes/getAll")
       query = 'CALL user_types_getAll();'
       connection.query(query, function(err, rows) {
         if (err) {

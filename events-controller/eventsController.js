@@ -11,9 +11,7 @@ EVENTS_ROUTER.prototype.handleRoutes = function(router, connection) {
     //router.use(bodyParser.urlencoded({ extended: false }));
     router.use(bodyParser.json());
     
-    //getAll: Gets All Users in system.
     router.post("/getAll", VerifyToken, function(req, res) {
-      console.log("events/getAll")
       query = 'CALL events_getAll();'
       connection.query(query, function(err, rows) {
         if (err) {

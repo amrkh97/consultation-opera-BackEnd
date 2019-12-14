@@ -39,7 +39,6 @@ USER_ROUTER.prototype.handleRoutes = function(router, connection) {
       });
     });
 
-    //getAll: Gets All Users in system.
     router.post("/getAll", VerifyToken, function(req, res) {
       query = 'CALL user_getAll();'
       connection.query(query, function(err, rows) {

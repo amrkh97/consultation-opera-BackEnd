@@ -6,7 +6,7 @@ DELIMITER $$
 create procedure user_getAllVerified()
 BEGIN
 
-SELECT * FROM users as U inner join StatusOfUsers as SU
+SELECT U.* FROM users as U inner join StatusOfUsers as SU
 on U.userStatus = SU.id
 WHERE SU.title = 'Verified';
 
@@ -15,7 +15,7 @@ END$$
 create procedure user_getAllNonVerified()
 BEGIN
 
-SELECT * FROM users as U inner join StatusOfUsers as SU
+SELECT U.* FROM users as U inner join StatusOfUsers as SU
 on U.userStatus = SU.id
 WHERE SU.title = 'Not Verified'; 
 
@@ -24,7 +24,7 @@ END$$
 create procedure user_getAll()
 BEGIN
 
-SELECT * FROM users as U inner join StatusOfUsers as SU
+SELECT U.*,SU.title FROM users as U inner join StatusOfUsers as SU
 on U.userStatus = SU.id;
 
 END$$
@@ -34,7 +34,6 @@ root:BEGIN
 
 IF NOT EXISTS (SELECT * FROM users where users.id = userID) THEN
 	BEGIN
-        DECLARE checkInt;
 		SELECT 2 as response; #User Does not exist 
         LEAVE root;
 	END;
@@ -60,8 +59,6 @@ create procedure user_addNew(
     IN _position INT
 )
 root:BEGIN
-SELECT _birthDate;
-
 
 IF EXISTS (SELECT * FROM users where users.email = _email) THEN
 	BEGIN
@@ -126,4 +123,76 @@ SELECT * FROM `events`;
 
 END$$
 
+CREATE PROCEDURE events_getActive()
+BEGIN
+
+SELECT * FROM `events` WHERE eventStatus = 'ACTIVE';
+
+END$$
+
+CREATE PROCEDURE events_getNonActive()
+BEGIN
+
+SELECT * FROM `events` WHERE eventStatus = 'DONE';
+
+END$$
+
+CREATE PROCEDURE halls_getAvailable()
+BEGIN
+
+SELECT * FROM halls
+WHERE halls.hallStatus = 'AVAILABLE';
+
+END$$
+
+CREATE PROCEDURE halls_getOccupied()
+BEGIN
+
+SELECT halls.* FROM halls
+WHERE halls.hallStatus = 'OCCUPIED';
+
+END$$
+
+CREATE PROCEDURE halls_getAll()
+BEGIN
+
+SELECT * FROM halls;
+
+END$$
+
+CREATE PROCEDURE halls_addNew(
+    IN _hallName VARCHAR(50),
+    IN _numberRows INT,
+    IN _numberColumns INT)
+root:BEGIN
+
+IF EXISTS (SELECT * FROM halls where halls.hallName = _hallName) THEN
+	BEGIN
+		SELECT 1 as response; #Hall Already Exists
+        LEAVE root;
+	END;
+END if;
+
+insert into `halls`(`hallName`,`numberRows`,
+`numberColumns`)
+values
+(_hallName,_numberRows,_numberColumns);
+
+SELECT 0 as response; #Hall inserted succesfully
+
+END$$
+
+
+#WIP
+CREATE PROCEDURE events_addNew()
+root:BEGIN
+
+IF EXISTS (SELECT * FROM events where users.email = _email) THEN
+	BEGIN
+		SELECT 1 as response; #Email Already Exists
+        LEAVE root;
+	END;
+END if;
+
+END$$
 

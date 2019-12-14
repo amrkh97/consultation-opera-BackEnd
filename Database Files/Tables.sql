@@ -13,7 +13,7 @@ values
 ("Opera Management"),
 ("Customer"),
 ("Guest");
------------------------------------
+
 
 CREATE TABLE IF NOT EXISTS StatusOfUsers(
     id int AUTO_INCREMENT primary key,
@@ -24,7 +24,6 @@ insert into `StatusOfUsers`(`title`)
 values
 ('Verified'),
 ('Not Verified');
------------------------------------
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -32,7 +31,7 @@ CREATE TABLE IF NOT EXISTS users (
     lastName VARCHAR(50) NOT NULL,
     userName VARCHAR(50) NOT NULL UNIQUE,
     userPassword VARCHAR(255) NOT NULL,
-    birthDate DATE DEFAULT CURRENT_DATE,
+    birthDate DATE,
     gender VARCHAR(6),
     city VARCHAR(50),
     userAddress VARCHAR(255) DEFAULT 'None',
@@ -49,19 +48,20 @@ insert into `users`(`firstName`,`lastName`,
 `gender`,`city`,`email`,`position`,`userStatus`)
 values
 ('Amr','Khaled','amrkh97','test1234','Male','Cairo','amrkh97@gmail.com',1,1);
---------------------------------------
+
 
 CREATE TABLE IF NOT EXISTS halls(
     id INT AUTO_INCREMENT PRIMARY KEY,
     hallName VARCHAR(50) DEFAULT 'Opera Hall',
     numberRows INT NOT NULL,
-    numberColumns INT NOT NULL
+    numberColumns INT NOT NULL,
+    hallStatus VARCHAR(25) DEFAULT 'AVAILABLE'
 );
 
 insert into `halls`(`hallName`,`numberRows`,`numberColumns`)
 values
 ('Omars Hall',10,10);
---------------------------------------
+
 
 CREATE TABLE IF NOT EXISTS events(
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -80,7 +80,7 @@ insert into `events`(`eventName`,`eventDescription`,`hallNumber`)
 values
 ('Laugh For A Cause','The wait is finally over!!
 You guessed it, 
-It\'s STAND UP COMEDY  🎤🎤
+It\'s STAND UP COMEDY
 Laughing is the best medicine, come laugh your stress away all for a good cause. The cause being شجرها , which is replanting formerly green spots in Maadi which are now dead due to lack of care.
 This event is dedicated to raise funds for program Revive Maadi which is a community service initiative containing multiple projects, one of which is شجرها.
 Rotaract Sarayat El-Maadi presents:
@@ -94,7 +94,11 @@ Location: KMT House
 Event time: Thursday 12 Dec 2019
 come join us and laugh for a cause
 and please feel free to invite and share with your friends',1);
-------------------------------------------
+
+UPDATE halls
+SET halls.hallStatus = 'OCCUPIED'
+WHERE halls.id = (SELECT hallNumber FROM events where events.eventStatus = 'ACTIVE');
+
 
 CREATE TABLE IF NOT EXISTS statusOfEvents(
     id int AUTO_INCREMENT PRIMARY KEY,
@@ -106,7 +110,6 @@ values
 ('ACTIVE'),
 ('CANCELLED'),
 ('DONE');
--------------------------------------------
 
 CREATE TABLE IF NOT EXISTS reservations(
     id int AUTO_INCREMENT PRIMARY KEY,

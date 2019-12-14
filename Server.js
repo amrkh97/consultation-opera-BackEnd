@@ -7,6 +7,7 @@ var auth =  require("./auth-controller/AuthController.js");
 var users = require("./user-controller/userController.js");
 var userTypes = require("./user-types-controller/userTypesController.js");
 var events = require("./events-controller/eventsController.js");
+var halls = require("./halls-controller/hallsController.js");
 
 function REST() {
   var self = this;
@@ -30,6 +31,7 @@ REST.prototype.connectMysql = function() {
     user: "developer",
     password: "Consultation2019",
     database: "Consultation_Opera",
+    
     debug: false
   });
 
@@ -48,13 +50,16 @@ REST.prototype.configureExpress = function(connection) {
     var usersRouterObj = express.Router();
     var usersTypesRouterObj = express.Router();
     var eventsRouterObj = express.Router();
+    var hallsRouterObj = express.Router();
     app.use("/user", usersRouterObj);
     app.use("/userTypes", usersTypesRouterObj);
     app.use("/events", eventsRouterObj);
+    app.use("/halls", hallsRouterObj);
     //Instantiate the Routes:
     new users(usersRouterObj, connection);
     new userTypes(usersTypesRouterObj, connection);
     new events(eventsRouterObj,connection);
+    new halls(hallsRouterObj,connection);
     self.startServer();
 };
 
