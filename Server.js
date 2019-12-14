@@ -5,6 +5,8 @@ var app = express();
 
 var auth =  require("./auth-controller/AuthController.js");
 var users = require("./user-controller/userController.js");
+var userTypes = require("./user-types-controller/userTypesController.js");
+var events = require("./events-controller/eventsController.js");
 
 function REST() {
   var self = this;
@@ -44,11 +46,15 @@ REST.prototype.configureExpress = function(connection) {
     var self = this;
     app.use(express.json());
     var usersRouterObj = express.Router();
+    var usersTypesRouterObj = express.Router();
+    var eventsRouterObj = express.Router();
     app.use("/user", usersRouterObj);
-    
+    app.use("/userTypes", usersTypesRouterObj);
+    app.use("/events", eventsRouterObj);
     //Instantiate the Routes:
     new users(usersRouterObj, connection);
-
+    new userTypes(usersTypesRouterObj, connection);
+    new events(eventsRouterObj,connection);
     self.startServer();
 };
 
