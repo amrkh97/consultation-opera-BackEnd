@@ -19,10 +19,8 @@ USER_ROUTER.prototype.handleRoutes = function(router, connection) {
         if (err) {
           console.log(err);
           res.json({ Error: true, Message: "Error executing MySQL query" });
-          connection.release();
         } else {
           res.json(rows[0]);
-          connection.release();
         }
       });
     });
@@ -34,10 +32,8 @@ USER_ROUTER.prototype.handleRoutes = function(router, connection) {
         if (err) {
           console.log(err);
           res.json({ Error: true, Message: "Error executing MySQL query" });
-          connection.release();
         } else {
           res.json(rows[0]);
-          connection.release();
         }
       });
     });
@@ -49,32 +45,46 @@ USER_ROUTER.prototype.handleRoutes = function(router, connection) {
         if (err) {
           console.log(err);
           res.json({ Error: true, Message: "Error executing MySQL query" });
-          connection.release();
         } else {
           res.json(rows[0]);
-          connection.release();
         }
       });
     });
 
-    //WIP:
-    //TODO: Figure out what the hell is wrong with the syntax of query! 
     router.post("/verify", VerifyToken, function(req, res) {
-      console.log("user/verify")
-      query = 'SET @outQuery = 0; CALL user_Verify(?,@outQuery); SELECT @outQuery;'
+      console.log("user/verify");
+
+      query = "CALL user_Verify(?);"
       var userID = req.body["id"];
       query = mysql.format(query, userID);
       connection.query(query, function(err, rows) {
         if (err) {
           console.log(err);
           res.json({ Error: true, Message: "Error executing MySQL query"});
-          connection.release();
         } else {
-          res.json(rows);
-          connection.release();
+          res.json(rows[0]);
         }
       });
     });
+
+    router.post("/changePosition", VerifyToken, function(req, res) {
+      console.log("user/changePosition");
+
+      query = "CALL user_changePosition(?,?);"
+      var userID = req.body["id"];
+      var positionID = req.body["position"];
+      query = mysql.format(query, [userID,positionID]);
+      connection.query(query, function(err, rows) {
+        if (err) {
+          console.log(err);
+          res.json({ Error: true, Message: "Error executing MySQL query"});
+        } else {
+          res.json(rows[0]);
+        }
+      });
+    });
+
+    
 
 };  
 
