@@ -11,9 +11,36 @@ USER_ROUTER.prototype.handleRoutes = function(router, connection) {
     //router.use(bodyParser.urlencoded({ extended: false }));
     router.use(bodyParser.json());
     
+    router.post("/register", VerifyToken, function(req, res) {
+      query = "CALL user_addNew(?,?,?,?,?,?,?,?,?,?);"
+      if (!(req.body["userAddress"])) {
+        req.body["userAddress"] = "No Address Entered"
+       }
+      myTable = [
+        req.body["firstName"],
+        req.body["lastName"],
+        req.body["userName"],
+        req.body["userPassword"],
+        req.body["birthDate"],
+        req.body["gender"],
+        req.body["city"],
+        req.body["userAddress"],
+        req.body["email"],
+        req.body["position"]
+      ];
+      query = mysql.format(query, myTable);
+      connection.query(query, function(err, rows) {
+        if (err) {
+          console.log(err);
+          res.json({ Error: true, Message: "Error executing MySQL query"});
+        } else {
+          res.json(rows[0]);
+        }
+      });
+    });
+
     //getAll: Gets All Users in system.
     router.post("/getAll", VerifyToken, function(req, res) {
-      console.log("user/getAll")
       query = 'CALL user_getAll();'
       connection.query(query, function(err, rows) {
         if (err) {
@@ -26,7 +53,6 @@ USER_ROUTER.prototype.handleRoutes = function(router, connection) {
     });
 
     router.post("/getAllVerified", VerifyToken, function(req, res) {
-      console.log("user/getAllVerified")
       query = 'CALL user_getAllVerified();'
       connection.query(query, function(err, rows) {
         if (err) {
@@ -39,7 +65,6 @@ USER_ROUTER.prototype.handleRoutes = function(router, connection) {
     });
 
     router.post("/getAllNonVerified", VerifyToken, function(req, res) {
-      console.log("user/getAllNonVerified")
       query = 'CALL user_getAllNonVerified();'
       connection.query(query, function(err, rows) {
         if (err) {
@@ -52,8 +77,6 @@ USER_ROUTER.prototype.handleRoutes = function(router, connection) {
     });
 
     router.post("/verify", VerifyToken, function(req, res) {
-      console.log("user/verify");
-
       query = "CALL user_Verify(?);"
       var userID = req.body["id"];
       query = mysql.format(query, userID);
@@ -68,8 +91,6 @@ USER_ROUTER.prototype.handleRoutes = function(router, connection) {
     });
 
     router.post("/changePosition", VerifyToken, function(req, res) {
-      console.log("user/changePosition");
-
       query = "CALL user_changePosition(?,?);"
       var userID = req.body["id"];
       var positionID = req.body["position"];
@@ -83,7 +104,6 @@ USER_ROUTER.prototype.handleRoutes = function(router, connection) {
         }
       });
     });
-
     
 
 };  
