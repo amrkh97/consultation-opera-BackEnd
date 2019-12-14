@@ -113,7 +113,7 @@ values
 
 CREATE TABLE IF NOT EXISTS reservations(
     id int AUTO_INCREMENT PRIMARY KEY,
-    eventID int, # Foreign Key
+    eventID int,
     userID int, 
     reservedRow int,
     reservedColumn int,

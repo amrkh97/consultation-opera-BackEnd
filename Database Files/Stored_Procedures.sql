@@ -183,6 +183,28 @@ SELECT 0 as response; #Hall inserted succesfully
 END$$
 
 
+CREATE PROCEDURE halls_editHall(
+	IN _id INT,
+    IN _hallName VARCHAR(50),
+    IN _numberRows INT,
+    IN _numberColumns INT)
+root:BEGIN
+
+IF NOT EXISTS (SELECT * FROM halls where halls.id = _id) THEN
+	BEGIN
+		SELECT 1 as response; #Hall Does Not Exist
+        LEAVE root;
+	END;
+END if;
+
+UPDATE halls
+SET hallName = _hallName,numberRows = _numberRows, numberColumns =_numberColumns
+WHERE halls.id = _id;
+
+SELECT 0 as response; #Hall updated succesfully
+
+END$$
+
 #WIP
 CREATE PROCEDURE events_addNew()
 root:BEGIN

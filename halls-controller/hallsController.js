@@ -65,6 +65,25 @@ HALLS_ROUTER.prototype.handleRoutes = function(router, connection) {
         });
       });
 
+      router.post("/editHall", VerifyToken, function(req, res) {
+        query = 'CALL halls_editHall(?,?,?,?);'
+        myTable = [
+            req.body["id"],
+            req.body["hallName"],
+            req.body["numberRows"],
+            req.body["numberColumns"]
+          ];
+        query = mysql.format(query, myTable);
+        connection.query(query, function(err, rows) {
+          if (err) {
+            console.log(err);
+            res.json({ Error: true, Message: "Error executing MySQL query" });
+          } else {
+            res.json(rows[0]);
+          }
+        });
+      });
+
 };  
 
 // ------------------------------------------------------------------------------------- //
