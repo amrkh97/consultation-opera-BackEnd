@@ -329,3 +329,15 @@ WHERE users.id = _userID;
 
 SELECT 0 as response; #reservation Deleted
 END$$
+
+CREATE PROCEDURE user_removeUser(
+    IN _userID INT
+)
+root:BEGIN
+
+UPDATE users
+SET users.userStatus = 3 #cancelled user
+WHERE users.id = _userID;
+
+SELECT 0 as response; #reservation Deleted
+END$$
