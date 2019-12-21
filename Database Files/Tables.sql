@@ -23,7 +23,8 @@ CREATE TABLE IF NOT EXISTS StatusOfUsers(
 insert into `StatusOfUsers`(`title`)
 values
 ('Verified'),
-('Not Verified');
+('Not Verified'),
+('Cancelled');
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,

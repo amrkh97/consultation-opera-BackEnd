@@ -62,7 +62,6 @@ EVENTS_ROUTER.prototype.handleRoutes = function(router, connection) {
         }
       });
     }); 
-
     
     router.post("/getReservedSeats", VerifyToken, function(req, res) {
       query = 'CALL event_getReservedSeats(?);'
