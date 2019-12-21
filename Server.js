@@ -78,3 +78,13 @@ REST.prototype.stop = function(err) {
 
 //creates the server
 new REST();
+
+
+/*
+TODOs:
+- userController: Sign In User
+- userController: Edit User Data
+- authController: Create Token
+- All Controllers: Edit callback function for check on tokens and relevant checks based on job role
+
+*/
