@@ -205,16 +205,32 @@ SELECT 0 as response; #Hall updated succesfully
 
 END$$
 
-#WIP
-CREATE PROCEDURE events_addNew()
+CREATE PROCEDURE events_addNew(
+	IN _eventName VARCHAR(100),
+	IN _eventDescription text,
+    IN _eventPoster VARCHAR(255),
+    IN _eventTiming DATETIME,
+    IN _hallNumber int
+)
 root:BEGIN
 
-IF EXISTS (SELECT * FROM events where users.email = _email) THEN
+IF EXISTS (SELECT * FROM events where events.eventName = _eventName) THEN
 	BEGIN
-		SELECT 1 as response; #Email Already Exists
+		SELECT 1 as response; #Event Already Exists
         LEAVE root;
 	END;
 END if;
+
+insert into `events`(`eventName`,`eventDescription`,
+`eventPoster`,`eventTiming`,`hallNumber`)
+values
+(_eventName,_eventDescription,_eventPoster,_eventTiming,_hallNumber);
+
+UPDATE halls
+SET halls.hallStatus = 'OCCUPIED'
+WHERE halls.id = _hallNumber;
+
+SELECT 0 as response; #Hall inserted succesfully
 
 END$$
 

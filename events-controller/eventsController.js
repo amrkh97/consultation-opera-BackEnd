@@ -21,7 +21,29 @@ EVENTS_ROUTER.prototype.handleRoutes = function(router, connection) {
           res.json(rows[0]);
         }
       });
-    });    
+    }); 
+    
+    router.post("/create", VerifyToken, function(req, res) {
+      query = 'CALL events_addNew(?,?,?,?,?);'
+        myTable = [
+          req.body["eventName"],
+          req.body["eventDescription"],
+          req.body["eventPoster"],
+          req.body["eventTiming"],
+          req.body["hallNumber"]
+        ];
+        console.log(myTable)
+        query = mysql.format(query, myTable);
+        
+        connection.query(query, function(err, rows) {
+        if (err) {
+          console.log(err);
+          res.json({ Error: true, Message: "Error executing MySQL query" });
+        } else {
+          res.json(rows[0]);
+        }
+      });
+    }); 
 
 };  
 
