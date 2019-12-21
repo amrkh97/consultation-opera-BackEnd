@@ -124,6 +124,23 @@ USER_ROUTER.prototype.handleRoutes = function(router, connection) {
       });
     });
 
+    router.post("/cancelTicket", VerifyToken, function(req, res) {
+      query = "CALL user_cancelTicket(?,?);"
+      myTable = [
+        req.body["eventID"],
+        req.body["userID"]
+      ];
+      query = mysql.format(query, myTable);
+      connection.query(query, function(err, rows) {
+        if (err) {
+          console.log(err);
+          res.json({ Error: true, Message: "Error executing MySQL query"});
+        } else {
+          res.json(rows[0]);
+        }
+      });
+    });
+
 };  
 
 // ------------------------------------------------------------------------------------- //

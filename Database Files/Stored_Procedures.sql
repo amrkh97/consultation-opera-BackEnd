@@ -299,3 +299,21 @@ DELETE FROM events WHERE events.id = _eventID;
 SELECT 0 as response; #Event Deleted
 END$$
 
+
+CREATE PROCEDURE user_cancelTicket(
+	IN _eventID INT,
+    IN _userID INT
+)
+root:BEGIN
+
+IF NOT EXISTS (SELECT * FROM events where events.id = _eventID) THEN
+	BEGIN
+		SELECT 1 as response; #Event does not exist
+        LEAVE root;
+	END;
+END if;
+
+DELETE FROM reservations WHERE reservations.eventID = _eventID and reservations.userID = _userID;
+
+SELECT 0 as response; #reservation Deleted
+END$$
