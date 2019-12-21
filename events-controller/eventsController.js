@@ -32,7 +32,7 @@ EVENTS_ROUTER.prototype.handleRoutes = function(router, connection) {
           req.body["eventTiming"],
           req.body["hallNumber"]
         ];
-        console.log(myTable)
+        
         query = mysql.format(query, myTable);
         
         connection.query(query, function(err, rows) {
@@ -44,6 +44,44 @@ EVENTS_ROUTER.prototype.handleRoutes = function(router, connection) {
         }
       });
     }); 
+
+    router.post("/cancel", VerifyToken, function(req, res) {
+      query = 'CALL event_cancel(?);'
+        myTable = [
+          req.body["eventID"]
+        ];
+        
+        query = mysql.format(query, myTable);
+        
+        connection.query(query, function(err, rows) {
+        if (err) {
+          console.log(err);
+          res.json({ Error: true, Message: "Error executing MySQL query" });
+        } else {
+          res.json(rows[0]);
+        }
+      });
+    }); 
+
+    
+    router.post("/getReservedSeats", VerifyToken, function(req, res) {
+      query = 'CALL event_getReservedSeats(?);'
+        myTable = [
+          req.body["eventID"]
+        ];
+        
+        query = mysql.format(query, myTable);
+        
+        connection.query(query, function(err, rows) {
+        if (err) {
+          console.log(err);
+          res.json({ Error: true, Message: "Error executing MySQL query" });
+        } else {
+          res.json(rows[0]);
+        }
+      });
+    }); 
+
 
 };  
 

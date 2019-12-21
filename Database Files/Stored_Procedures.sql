@@ -234,3 +234,68 @@ SELECT 0 as response; #Hall inserted succesfully
 
 END$$
 
+
+
+CREATE PROCEDURE user_reserveTicket(
+	IN _eventID INT,
+	IN _userID INT,
+    IN _reservedRow INT,
+    IN _reservedColumn INT
+)
+root:BEGIN
+
+IF EXISTS (SELECT * FROM reservations where reservations.userID = _userID and reservations.eventID = _eventID) THEN
+	BEGIN
+		SELECT 1 as response; #One Seat Already Taken For User
+        LEAVE root;
+	END;
+END if;
+
+insert into `reservations`(`eventID`,`userID`,
+`reservedRow`,`reservedColumn`)
+values
+(_eventID,_userID,_reservedRow,_reservedColumn);
+
+SELECT 0 as response; #Seat reserved succesfully
+
+END$$
+
+
+CREATE PROCEDURE event_getReservedSeats(
+	IN _eventID INT
+)
+root:BEGIN
+
+IF NOT EXISTS (SELECT * FROM reservations where reservations.eventID = _eventID) THEN
+	BEGIN
+		SELECT 1 as response; #Event does not exist
+        LEAVE root;
+	END;
+END if;
+
+SELECT * FROM reservations;
+
+END$$
+
+
+CREATE PROCEDURE event_cancel(
+	IN _eventID INT
+)
+root:BEGIN
+
+IF NOT EXISTS (SELECT * FROM events where events.id = _eventID) THEN
+	BEGIN
+		SELECT 1 as response; #Event does not exist
+        LEAVE root;
+	END;
+END if;
+
+UPDATE halls
+SET halls.hallStatus = 'AVAILABLE'
+WHERE halls.id = (SELECT hallNumber FROM events where events.id = _eventID);
+
+DELETE FROM reservations WHERE reservations.eventID = _eventID;
+DELETE FROM events WHERE events.id = _eventID;
+SELECT 0 as response; #Event Deleted
+END$$
+
