@@ -1,5 +1,4 @@
 var bodyParser = require("body-parser");
-var mysql = require("mysql");
 var VerifyToken = require("../auth-controller/VerifyToken.js"); //WIP
 
 function USERTYPES_ROUTER(router, connection) {

@@ -341,3 +341,49 @@ WHERE users.id = _userID;
 
 SELECT 0 as response; #reservation Deleted
 END$$
+
+CREATE PROCEDURE user_login(
+	IN _userName VARCHAR(50),
+	IN _userPassword VARCHAR(255)
+)
+root:BEGIN
+
+IF NOT EXISTS (SELECT * FROM users where users.userName = _userName AND users.userStatus = 1) THEN
+	BEGIN
+		SELECT 1 as response; #User does not exist
+        LEAVE root;
+	END;
+END if;
+
+IF NOT EXISTS (SELECT * FROM users where users.userName = _userName AND users.userPassword = _userPassword) THEN
+	BEGIN
+		SELECT 1 as response; #User does not exist
+        LEAVE root;
+	END;
+END if;
+
+SELECT 0 as response; #Login Success
+END$$
+
+
+CREATE PROCEDURE event_updatePoster(
+	IN _eventID INT,
+	IN _posterLink VARCHAR(255)
+)
+root:BEGIN
+
+IF NOT EXISTS (SELECT * FROM events where events.id = _eventID) THEN
+	BEGIN
+		SELECT 1 as response; #Event does not exist
+        LEAVE root;
+	END;
+END if;
+
+UPDATE events
+SET events.eventPoster = _posterLink
+WHERE events.id = _eventID;
+
+SELECT 0 as response; #Update Successful
+END$$
+
+
