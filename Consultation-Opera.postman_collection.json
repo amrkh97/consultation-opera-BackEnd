@@ -560,6 +560,114 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Events-uploadPoster",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"eventID\":1,\n\t\"posterPath\":\"ay7aga\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/events/uploadPoster",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"events",
+						"uploadPoster"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User-login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\":\"amrkh1997\",\n\t\"userPassword\":\"test1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User-editData",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{       \r\n        \"userID\":1,\r\n        \"firstName\":\"Amr\",\r\n        \"lastName\":\"Khaled\",\r\n        \"userName\":\"amrkh1997\",\r\n        \"userPassword\":\"test1234\",\r\n        \"birthDate\":\"1997-04-09 00:00:00\",\r\n        \"gender\":\"Male\",\r\n        \"city\":\"Cairo\",\r\n        \"userAddress\":\"124,Sakr Qurish, New Maadi\",\r\n        \"email\":\"amrkh97@hotmail.com\",\r\n        \"position\":1\r\n}        ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/user/editData",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"editData"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
