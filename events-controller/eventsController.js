@@ -79,7 +79,25 @@ EVENTS_ROUTER.prototype.handleRoutes = function(router, connection) {
           res.json(rows[0]);
         }
       });
-    }); 
+    });
+    
+    router.post("/uploadPoster", VerifyToken, function(req, res) {
+      query = 'CALL event_updatePoster(?,?);'
+        myTable = [
+          req.body["eventID"],
+          req.body["posterPath"]
+        ];
+        query = mysql.format(query, myTable);
+        connection.query(query, function(err, rows) {
+        if (err) {
+          console.log(err);
+          res.json({ Error: true, Message: "Error executing MySQL query" });
+        } else {
+          console.log(rows[0])
+          res.json(rows[0]);
+        }
+      });
+    });
 
 
 };  
