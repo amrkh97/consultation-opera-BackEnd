@@ -3,7 +3,6 @@ var mysql = require("mysql");
 var application_root = __dirname;
 var app = express();
 
-var auth =  require("./auth-controller/AuthController.js");
 var users = require("./user-controller/userController.js");
 var userTypes = require("./user-types-controller/userTypesController.js");
 var events = require("./events-controller/eventsController.js");
@@ -82,9 +81,7 @@ new REST();
 
 /*
 TODOs:
-- userController: Sign In User
 - userController: Edit User Data
-- authController: Create Token
-- All Controllers: Edit callback function for check on tokens and relevant checks based on job role
+- authController: Create Token *** May not be implemented as it is not necessary for a dummy project like this.
 
 */

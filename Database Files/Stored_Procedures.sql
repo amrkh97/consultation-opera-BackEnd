@@ -363,6 +363,7 @@ IF NOT EXISTS (SELECT * FROM users where users.userName = _userName AND users.us
 END if;
 
 SELECT 0 as response; #Login Success
+SELECT * FROM users where users.userName = _userName AND users.userPassword = _userPassword;
 END$$
 
 
@@ -387,3 +388,41 @@ SELECT 0 as response; #Update Successful
 END$$
 
 
+
+create procedure user_editData(
+	IN _userID INT,
+    IN _firstName varchar(50),
+    IN _lastName varchar(50),
+    IN _userName VARCHAR(50),
+    IN _userPassword VARCHAR(255),
+    IN _birthDate DATE,
+    IN _gender VARCHAR(6),
+    IN _city VARCHAR(50),
+    IN _userAddress VARCHAR(255),
+    IN _email VARCHAR(100),
+    IN _position INT
+)
+root:BEGIN
+
+IF NOT EXISTS (SELECT * FROM users where users.id = _userID) THEN
+	BEGIN
+		SELECT 1 as response; #User does not exist
+        LEAVE root;
+	END;
+END if;
+
+update users
+SET firstName = _firstName,
+lastName = _lastName,
+userName = _userName,
+userPassword = _userPassword,
+birthDate = _birthDate,
+gender = _gender,
+city = _city,
+userAddress = _userAddress,
+email = _email,
+position = _position
+WHERE users.id = _userID;
+
+SELECT 0 as response; #User data updated
+END$$

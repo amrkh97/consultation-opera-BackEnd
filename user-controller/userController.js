@@ -158,6 +158,61 @@ USER_ROUTER.prototype.handleRoutes = function(router, connection) {
       });
     });
 
+    
+    router.post("/login", VerifyToken, function(req, res) {
+      query = "CALL user_login(?,?);"
+      myTable = [
+        req.body["userName"],
+        req.body["userPassword"]
+      ];
+      query = mysql.format(query, myTable);
+      connection.query(query, function(err, rows) {
+        if (err) {
+          console.log(err);
+          res.json({ Error: true, Message: "Error executing MySQL query"});
+        } else {
+          
+          if (rows[0][0].response != 0){
+            return res.status(403).send({ auth: false, message: "Wrong User Credentials!" });
+          }else{
+            //Send the response = 0  and all user data
+            res.status(200).send({ response: rows[0][0].response, userData: rows[1][0] });
+            
+          }
+                 
+        }
+      });
+    });
+
+
+    router.post("/editData", VerifyToken, function(req, res) {
+      query = "CALL user_editData(?,?,?,?,?,?,?,?,?,?,?);"
+      myTable = [
+        req.body["userID"],
+        req.body["firstName"],
+        req.body["lastName"],
+        req.body["userName"],
+        req.body["userPassword"],
+        req.body["birthDate"],
+        req.body["gender"],
+        req.body["city"],
+        req.body["userAddress"],
+        req.body["email"],
+        req.body["position"]
+      ];
+
+      query = mysql.format(query, myTable);
+      connection.query(query, function(err, rows) {
+        if (err) {
+          console.log(err);
+          res.json({ Error: true, Message: "Error executing MySQL query"});
+        } else {
+          res.json(rows[0]);
+        }
+      });
+    });
+
+
 };  
 
 // ------------------------------------------------------------------------------------- //
