@@ -453,3 +453,16 @@ ON halls.id = events.hallNumber
 WHERE events.id = _eventID;
 
 END$$
+
+
+CREATE PROCEDURE user_getMyEvents(
+	IN _userID INT
+)
+root:BEGIN
+
+SELECT events.* FROM events
+INNER JOIN reservations
+ON events.id = reservations.eventID
+WHERE events.eventStatus = 'ACTIVE'
+AND reservations.userID = _userID;
+END$$

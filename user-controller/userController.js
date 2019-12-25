@@ -213,6 +213,23 @@ USER_ROUTER.prototype.handleRoutes = function(router, connection) {
     });
 
 
+    router.post("/myEvents", VerifyToken, function(req, res) {
+      query = "CALL user_getMyEvents(?);"
+      myTable = [
+        req.body["userID"]
+      ];
+      query = mysql.format(query, myTable);
+      connection.query(query, function(err, rows) {
+        if (err) {
+          console.log(err);
+          res.json({ Error: true, Message: "Error executing MySQL query"});
+        } else {
+          res.json(rows[0]);
+        }
+      });
+    });
+
+
 };  
 
 // ------------------------------------------------------------------------------------- //
