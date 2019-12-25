@@ -251,6 +251,14 @@ IF EXISTS (SELECT * FROM reservations where reservations.userID = _userID and re
 	END;
 END if;
 
+
+IF EXISTS (SELECT * FROM reservations where reservations.reservedRow = _reservedRow and reservations.reservedColumn = _reservedColumn) THEN
+	BEGIN
+		SELECT 1 as response; #One Seat Already Taken For User
+        LEAVE root;
+	END;
+END if;
+
 insert into `reservations`(`eventID`,`userID`,
 `reservedRow`,`reservedColumn`)
 values
