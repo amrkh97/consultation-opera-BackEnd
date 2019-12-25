@@ -84,6 +84,8 @@ HALLS_ROUTER.prototype.handleRoutes = function(router, connection) {
         });
       });
 
+      
+
 };  
 
 // ------------------------------------------------------------------------------------- //

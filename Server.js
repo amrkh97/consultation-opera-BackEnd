@@ -18,7 +18,7 @@ app.use(function(req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  //res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Credentials", true);
   next();
 });
 
@@ -81,7 +81,5 @@ new REST();
 
 /*
 TODOs:
-- userController: Edit User Data
 - authController: Create Token *** May not be implemented as it is not necessary for a dummy project like this.
-
 */

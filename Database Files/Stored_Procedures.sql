@@ -426,3 +426,22 @@ WHERE users.id = _userID;
 
 SELECT 0 as response; #User data updated
 END$$
+
+CREATE PROCEDURE event_getHallForEvent(
+	IN _eventID INT
+)
+root:BEGIN
+
+IF NOT EXISTS (SELECT * FROM events where events.id = _eventID) THEN
+	BEGIN
+		SELECT 1 as response; #Event does not exist
+        LEAVE root;
+	END;
+END if;
+
+SELECT 0 as response; #Update Successful
+SELECT halls.* FROM halls INNER JOIN events
+ON halls.id = events.hallNumber
+WHERE events.id = _eventID;
+
+END$$
